@@ -1,0 +1,46 @@
+﻿@page "/gettest"
+
+<PageTitle>Get Test</PageTitle>
+
+@using SDN.Data
+@inject ONOSGetService GetService;
+
+<h1>Get Test</h1>
+
+<p>This is a ONOS Get Test Page</p>
+
+
+<h3>ONOS IP Address : </h3>
+<input @bind="onosIpAdd" class="form-control" />
+<br />
+<button @onclick="ONOSGetTest" class="btn btn-primary">ONOS Get Test button</button>
+<br />
+<br />
+
+<p>
+    <h2>Devices</h2>
+    @onos.devices
+    <h2>Hosts</h2>
+    @onos.hosts
+    <h2>Links</h2>
+    @onos.links
+    <h2>Flows</h2>
+    @onos.flows
+    <h2>Network / Configuration</h2>
+    @onos.networkconfiguration
+</p>
+
+@code {
+    private ONOS? onos = new ONOS();
+    private string onosIpAdd = "192.168.98.142";
+
+    void ONOSGetTest()
+    {
+        onos.ipadd = onosIpAdd;
+        onos.devices =  GetService.GetONOSInformation(onos, "devices");
+        onos.hosts = GetService.GetONOSInformation(onos, "hosts");
+        onos.links = GetService.GetONOSInformation(onos, "links");
+        onos.flows = GetService.GetONOSInformation(onos, "flows");
+        onos.networkconfiguration = GetService.GetONOSInformation(onos, "network / configuration");
+    }
+}

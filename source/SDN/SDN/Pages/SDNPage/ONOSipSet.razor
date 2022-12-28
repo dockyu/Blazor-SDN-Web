@@ -1,0 +1,30 @@
+﻿@page "/onosipset"
+
+<PageTitle>ONOS IP Set</PageTitle>
+
+@using SDN.Data
+@inject ONOS onos;
+
+<h1>ONOS IP Set</h1>
+
+<p>set your target ONOS controllor ip address</p>
+
+
+<h3>ONOS IP Address : </h3>
+<input @bind="onosIp" class="form-control" />
+<br />
+<button @onclick="SetIP" class="btn btn-primary">Set</button>
+<br />
+<br />
+<p>onos.ipadd = @onos.ipadd</p>
+<br />
+<br />
+
+@code {
+    private string onosIp = "";
+
+    void SetIP()
+    {
+        onos.ipadd = onosIp;
+    }
+}
