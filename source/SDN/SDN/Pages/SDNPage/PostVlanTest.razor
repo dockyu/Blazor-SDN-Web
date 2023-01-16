@@ -1,0 +1,19 @@
+﻿@page "/postvlantest"
+
+<PageTitle>Post Vlan Test</PageTitle>
+
+
+@using SDN.Data
+@inject ONOSPostService PostService;
+
+<h1>Post Vlan Test</h1>
+
+<button @onclick="ONOSPostVlanTest" class="btn btn-primary">ONOS Post Vlan Test</button>
+
+
+
+@code {
+	void ONOSPostVlanTest() {
+		PostService.PostVlanTest();
+	}
+}

@@ -9,7 +9,9 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<ONOSGetService>();
+builder.Services.AddSingleton<ONOSPostService>();
 builder.Services.AddScoped<ONOS>();
+builder.Services.AddSingleton<JsonDecodeService>();
 
 var app = builder.Build();
 

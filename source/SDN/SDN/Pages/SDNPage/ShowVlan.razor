@@ -1,0 +1,37 @@
+﻿@page "/showvlan"
+
+<PageTitle>Show Vlan</PageTitle>
+
+@using SDN.Data
+@inject ONOSGetService GetService;
+@inject ONOS onos;
+@inject JsonDecodeService jsondecodeservice;
+
+<h1>ONOS Show Vlan</h1>
+
+
+
+<h3>ONOS IP Address : @onos.onosipadd ,ONOS Port : @onos.onosport </h3>
+<br />
+<button @onclick="ONOSShowVlan" class="btn btn-primary">ONOS Show Vlan button</button>
+<br />
+<br />
+
+<p>
+    <h2>Network / Configuration json string</h2>
+    @onos.networkconfiguration_json
+</p>
+
+<p>
+    <h2>Vlan list</h2>
+</p>
+
+
+
+@code {
+
+    void ONOSShowVlan()
+    {
+        onos.networkconfiguration_json = GetService.GetONOSInformation(onos, "network/configuration");
+    }
+}

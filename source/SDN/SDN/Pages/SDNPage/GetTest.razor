@@ -4,43 +4,39 @@
 
 @using SDN.Data
 @inject ONOSGetService GetService;
+@inject ONOS onos;
 
-<h1>Get Test</h1>
-
-<p>This is a ONOS Get Test Page</p>
+<h1>ONOS Get Test</h1>
 
 
-<h3>ONOS IP Address : </h3>
-<input @bind="onosIpAdd" class="form-control" />
+
+<h3>ONOS IP Address : @onos.onosipadd ,ONOS Port : @onos.onosport </h3>
 <br />
 <button @onclick="ONOSGetTest" class="btn btn-primary">ONOS Get Test button</button>
 <br />
 <br />
 
 <p>
-    <h2>Devices</h2>
-    @onos.devices
-    <h2>Hosts</h2>
-    @onos.hosts
-    <h2>Links</h2>
-    @onos.links
-    <h2>Flows</h2>
-    @onos.flows
-    <h2>Network / Configuration</h2>
-    @onos.networkconfiguration
+    <h2>Devices json string</h2>
+    @onos.devices_json
+    <h2>Hosts json string</h2>
+    @onos.hosts_json
+    <h2>Links json string</h2>
+    @onos.links_json
+    <h2>Flows json string</h2>
+    @onos.flows_json
+    <h2>Network / Configuration json string</h2>
+    @onos.networkconfiguration_json
 </p>
 
 @code {
-    private ONOS? onos = new ONOS();
-    private string onosIpAdd = "192.168.98.142";
 
     void ONOSGetTest()
     {
-        onos.ipadd = onosIpAdd;
-        onos.devices =  GetService.GetONOSInformation(onos, "devices");
-        onos.hosts = GetService.GetONOSInformation(onos, "hosts");
-        onos.links = GetService.GetONOSInformation(onos, "links");
-        onos.flows = GetService.GetONOSInformation(onos, "flows");
-        onos.networkconfiguration = GetService.GetONOSInformation(onos, "network / configuration");
+        onos.devices_json = GetService.GetONOSInformation(onos, "devices");
+        onos.hosts_json = GetService.GetONOSInformation(onos, "hosts");
+        onos.links_json = GetService.GetONOSInformation(onos, "links");
+        onos.flows_json = GetService.GetONOSInformation(onos, "flows");
+        onos.networkconfiguration_json = GetService.GetONOSInformation(onos, "network/configuration");
     }
 }

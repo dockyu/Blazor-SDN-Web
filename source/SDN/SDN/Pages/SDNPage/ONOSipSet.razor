@@ -5,26 +5,54 @@
 @using SDN.Data
 @inject ONOS onos;
 
-<h1>ONOS IP Set</h1>
+<h1>ONOS IP&Port Set</h1>
 
-<p>set your target ONOS controllor ip address</p>
-
-
-<h3>ONOS IP Address : </h3>
+<br />
+<h4>ONOS IP Address</h4>
 <input @bind="onosIp" class="form-control" />
+<h4>ONOS Port</h4>
+<input @bind="onosport" class="form-control" />
 <br />
-<button @onclick="SetIP" class="btn btn-primary">Set</button>
+<button @onclick="Set" class="btn btn-primary">Set</button>
 <br />
 <br />
-<p>onos.ipadd = @onos.ipadd</p>
+
+<p>ONOS IP Address = @onos.onosipadd</p>
+<p>ONOS Port = @onos.onosport</p>
 <br />
 <br />
 
 @code {
-    private string onosIp = "";
+    private string onosIp = "192.168.98.142";
+    private string onosport = "8181";
 
-    void SetIP()
+    Task StartupTask()
     {
-        onos.ipadd = onosIp;
+        // Do some task based work
+        onosIp = string.IsNullOrEmpty(onos.onosipadd) ? onosIp : onos.onosipadd;
+        onosport = string.IsNullOrEmpty(onos.onosport) ? onosport : onos.onosport;
+        return Task.CompletedTask;
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        await StartupTask();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        // execute conditionally for loading data, otherwise this will load
+        // every time the page refreshes
+        if (firstRender)
+        {
+            // Do work to load page data and set properties
+            onosIp = "192.168.98.142";
+            onosport = "8181";
+        }
+    }
+
+    void Set()
+    {
+        onos.onosipadd = onosIp;
+        onos.onosport = onosport;
     }
 }
