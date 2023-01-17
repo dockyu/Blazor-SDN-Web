@@ -18,25 +18,25 @@
 
 <p>
     <h2>Devices json string</h2>
-    @onos.devices_json
+    @onos.devices_jsonstring
     <h2>Hosts json string</h2>
-    @onos.hosts_json
+    @onos.hosts_jsonstring
     <h2>Links json string</h2>
-    @onos.links_json
+    @onos.links_jsonstring
     <h2>Flows json string</h2>
-    @onos.flows_json
+    @onos.flows_jsonstring
     <h2>Network / Configuration json string</h2>
-    @onos.networkconfiguration_json
+    @onos.networkconfiguration_jsonstring
 </p>
 
 @code {
 
     void ONOSGetTest()
     {
-        onos.devices_json = GetService.GetONOSInformation(onos, "devices");
-        onos.hosts_json = GetService.GetONOSInformation(onos, "hosts");
-        onos.links_json = GetService.GetONOSInformation(onos, "links");
-        onos.flows_json = GetService.GetONOSInformation(onos, "flows");
-        onos.networkconfiguration_json = GetService.GetONOSInformation(onos, "network/configuration");
+        onos.devices_jsonstring = GetService.GetONOSInformation(onos, "devices");
+        onos.hosts_jsonstring = GetService.GetONOSInformation(onos, "hosts");
+        onos.links_jsonstring = GetService.GetONOSInformation(onos, "links");
+        onos.flows_jsonstring = GetService.GetONOSInformation(onos, "flows");
+        onos.networkconfiguration_jsonstring = GetService.GetONOSInformation(onos, "network/configuration");
     }
 }

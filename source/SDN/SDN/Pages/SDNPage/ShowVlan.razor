@@ -19,7 +19,7 @@
 
 <p>
     <h2>Network / Configuration json string</h2>
-    @onos.networkconfiguration_json
+    @onos.networkconfiguration_jsonstring
 </p>
 
 <p>
@@ -32,6 +32,6 @@
 
     void ONOSShowVlan()
     {
-        onos.networkconfiguration_json = GetService.GetONOSInformation(onos, "network/configuration");
+        onos.networkconfiguration_jsonstring = GetService.GetONOSInformation(onos, "network/configuration");
     }
 }

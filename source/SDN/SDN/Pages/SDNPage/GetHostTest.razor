@@ -1,0 +1,68 @@
+﻿@page "/gethosttest"
+
+<PageTitle>Get Test</PageTitle>
+
+@using SDN.Data
+@inject ONOSGetService GetService;
+@inject ONOS onos;
+@inject JsonDecodeService jsondecodeservice;
+
+<h1>ONOS Get Host Test</h1>
+
+
+
+<h3>ONOS IP Address : @onos.onosipadd ,ONOS Port : @onos.onosport </h3>
+<br />
+<button @onclick="ONOSGetHostandVlanTest" class="btn btn-primary">ONOS Get Host&Vlan Test button</button>
+<br />
+<br />
+
+@*<p>
+    <h2>Hosts json string</h2>
+    @onos.hosts_jsonstring
+</p>*@
+
+    <table class='table'>
+        <thead>
+            <tr>
+                <th>interfaceName</th>
+                <th>elementId</th>
+                <th>port</th>
+                <th>vlanName</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var host in onos.hostsList)
+            {
+                <tr>
+                    <td>@host.interfaceName</td>
+                    <td>@host.location.elementId</td>
+                    <td>@host.location.port</td>
+                    <td>@host.vlanName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+@code {
+
+    void ONOSGetHostandVlanTest()
+    {
+        onos.hosts_jsonstring = GetService.GetONOSInformation(onos, "hosts"); // Get the hosts json string
+        List<Host> hostList = JsonDecodeService.DecodeHosts(onos.hosts_jsonstring); // decode and get a list store all host now
+        onos.hostsList.Clear();
+        onos.hostsList = hostList;
+
+        onos.networkconfiguration_jsonstring = GetService.GetONOSInformation(onos, "network/configuration"); // get the network/configuration json string
+        JsonDecodeService.DecodeNetworkConfiguration(onos.hostsList, onos.networkconfiguration_jsonstring);
+
+        Console.WriteLine(onos.hostsList.Count);
+
+        foreach (var host in onos.hostsList){
+            Console.WriteLine(host.interfaceName);
+            Console.WriteLine(host.vlanName);
+            Console.WriteLine(host.location.elementId);
+            Console.WriteLine(host.location.port);
+        }
+    }
+}
