@@ -5,15 +5,21 @@
 
 @using SDN.Data
 @inject ONOSPostService PostService;
+@inject ONOS onos;
 
 <h1>Post Vlan Test</h1>
 
 <button @onclick="ONOSPostVlanTest" class="btn btn-primary">ONOS Post Vlan Test</button>
 
-
+<p>@finish</p>
 
 @code {
+	string? finish="";
 	void ONOSPostVlanTest() {
-		PostService.PostVlanTest();
+		onos.Ports.AddPort("of:0000000000007777/99", "h87");
+		PostService.PostVPLSports(onos);
+		onos.Vpls.AddvplsList("VLAN1", "h87");
+		PostService.PostVPLSapps(onos);
+		finish = "send finish";
 	}
 }

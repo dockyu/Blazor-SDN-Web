@@ -1,7 +1,20 @@
+using SDN.Data.ONOSStructure.NetworkConfiguration;
+
 namespace SDN.Data
 {
     public class ONOS
     {
+        //public void Initial()
+        //{
+        //    this.Vpls = new VPLS();
+        //    this.Ports = new PORTS();
+        //}
+
+        public ONOS()
+        {
+            this.Vpls = new VPLS();
+            this.Ports = new PORTS();
+        }
         public string? onosipadd { get; set; }
         public string? onosport { get; set; }
         public string? devices_json { get; set; }
@@ -16,7 +29,8 @@ namespace SDN.Data
         //public List<string?>? flows_list { get; set; }
         //public List<string?>? networkconfiguration_list { get; set; }
 
-        public VPLS? vpls { get; set; }
+        public VPLS? Vpls { get; set; }
+        public PORTS? Ports { get; set; }
     }
 
 }
