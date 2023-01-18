@@ -6,6 +6,8 @@
 @inject ONOSGetService GetService;
 @inject ONOS onos;
 @inject JsonDecodeService jsondecodeservice;
+@inject ONOSPostService PostService;
+
 
 <h1>ONOS Get Host Test</h1>
 
@@ -22,47 +24,64 @@
     @onos.hosts_jsonstring
 </p>*@
 
-    <table class='table'>
-        <thead>
+<table class='table'>
+    <thead>
+        <tr>
+            <th>interfaceName</th>
+            <th>elementId</th>
+            <th>port</th>
+            <th>vlanName</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var host in onos.hostsList)
+        {
             <tr>
-                <th>interfaceName</th>
-                <th>elementId</th>
-                <th>port</th>
-                <th>vlanName</th>
+                @*<td>@host.interfaceName</td>*@
+                <td>
+                    <input type="text" class="form-control" value="@host.interfaceName" @oninput="(e) => UpdateinterfaceName(host, e)" />
+                </td>
+                <td>@host.location.elementId</td>
+                <td>@host.location.port</td>
+                @*<td>@host.vlanName</td>*@
+                <td>
+                    <input type="text" class="form-control" @bind:event="oninput" @bind=@host.vlanName />
+                </td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var host in onos.hostsList)
-            {
-                <tr>
-                    <td>@host.interfaceName</td>
-                    <td>@host.location.elementId</td>
-                    <td>@host.location.port</td>
-                    <td>@host.vlanName</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+        }
+    </tbody>
+</table>
+
+<button @onclick="PostVpls" class="btn btn-primary">ONOS Post Vlan button</button>
+
 
 @code {
+
+    private void UpdateinterfaceName(Host host, ChangeEventArgs e) // input interfaceName update hostList.interfaceName
+        => host.interfaceName = e.Value?.ToString() ?? null;
+
+    void PostVpls()
+    {
+
+    }
 
     void ONOSGetHostandVlanTest()
     {
         onos.hosts_jsonstring = GetService.GetONOSInformation(onos, "hosts"); // Get the hosts json string
-        List<Host> hostList = JsonDecodeService.DecodeHosts(onos.hosts_jsonstring); // decode and get a list store all host now
+        List<Host> hostListNew = JsonDecodeService.DecodeHosts(onos.hosts_jsonstring); // decode and get a list store all host now
         onos.hostsList.Clear();
-        onos.hostsList = hostList;
+        onos.hostsList = hostListNew;
 
         onos.networkconfiguration_jsonstring = GetService.GetONOSInformation(onos, "network/configuration"); // get the network/configuration json string
         JsonDecodeService.DecodeNetworkConfiguration(onos.hostsList, onos.networkconfiguration_jsonstring);
 
-        Console.WriteLine(onos.hostsList.Count);
+        //Console.WriteLine(onos.hostsList.Count);
 
-        foreach (var host in onos.hostsList){
-            Console.WriteLine(host.interfaceName);
-            Console.WriteLine(host.vlanName);
-            Console.WriteLine(host.location.elementId);
-            Console.WriteLine(host.location.port);
-        }
+        //foreach (var host in onos.hostsList){
+        //    Console.WriteLine(host.interfaceName);
+        //    Console.WriteLine(host.vlanName);
+        //    Console.WriteLine(host.location.elementId);
+        //    Console.WriteLine(host.location.port);
+        //}
     }
 }

@@ -34,23 +34,48 @@ namespace SDN.Data
         public static void DecodeNetworkConfiguration(List<Host> hostList, string networkconfiguration_jsonstring)
         {
             var data = (JObject)JsonConvert.DeserializeObject(networkconfiguration_jsonstring);
-            var vplsList = data.SelectToken("apps.['org.onosproject.vpls'].vpls.vplsList").ToList();
             
-            foreach (var vpls in vplsList)
+            try
             {
-                var vpls_jobj = (JObject)JsonConvert.DeserializeObject(vpls.ToString());
-                string vlanName = vpls_jobj.SelectToken("name").ToString();
-                //Console.WriteLine(vlanName);
-                var hosts = vpls_jobj.SelectToken("interfaces").ToList();
-                foreach (var hostname in hosts) // all get hosts in vpls
+                var ports = data.SelectToken("ports").ToList();
+                //Console.WriteLine(ports.Count);
+                foreach (var port in ports) // all port in network/configuration posts
                 {
-                    var host = hostList.SingleOrDefault(x => x.interfaceName == hostname.ToString()); // find the same hostname host in hostList in onos
+                    var portString = port.ToString();
+                    int ofPosition = portString.IndexOf("of");
+                    string? location = portString.Substring(ofPosition, 21); // get the location (deviceId/port)
+                    //Console.WriteLine(portString);
+                    var port_jobj = (JObject)JsonConvert.DeserializeObject("{"+port.ToString()+"}");
+                    string? interfaceName = ((JObject)JsonConvert.DeserializeObject(port_jobj.SelectToken(location + ".interfaces").ToList()[0].ToString())).SelectToken("name").ToString(); // get the interfaceName
+                    //Console.WriteLine(interfaceName + "\n");
+                    var host = hostList.SingleOrDefault(x => (x.location.elementId+"/"+x.location.port) == location); // find the same hostname host in hostList in onos
                     if (host != null)
                     {
-                        host.vlanName = vlanName;
+                        host.interfaceName = interfaceName;
                     }
                 }
-                //Console.WriteLine(hosts);
+
+                var vplsList = data.SelectToken("apps.['org.onosproject.vpls'].vpls.vplsList").ToList(); // maybe throw ArgumentNullException when never post vpls
+                foreach (var vpls in vplsList) // all get vlan from vpls
+                {
+                    var vpls_jobj = (JObject)JsonConvert.DeserializeObject(vpls.ToString());
+                    string vlanName = vpls_jobj.SelectToken("name").ToString();
+                    //Console.WriteLine(vlanName);
+                    var interfaceNameList = vpls_jobj.SelectToken("interfaces").ToList();
+                    foreach (var interfaceName in interfaceNameList) // all get hosts from vpls
+                    {
+                        var host = hostList.SingleOrDefault(x => x.interfaceName == interfaceName.ToString()); // find the same hostname host in hostList in onos
+                        if (host != null)
+                        {
+                            host.vlanName = vlanName;
+                        }
+                    }
+                    //Console.WriteLine(hosts);
+                }
+            }
+            catch (ArgumentNullException e)
+            {
+
             }
 
             //Console.WriteLine(vplsList);

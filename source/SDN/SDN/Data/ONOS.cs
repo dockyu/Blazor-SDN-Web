@@ -41,7 +41,7 @@ namespace SDN.Data
         {
             this.interfaceName = new string("");
             this.location = new Location();
-            this.vlanName = new string("");
+            this.vlanName = new string("none");
         }
 
         public string? interfaceName; // at hosts <=> API
