@@ -62,8 +62,14 @@ namespace SDN.Data
                     string vlanName = vpls_jobj.SelectToken("name").ToString();
                     //Console.WriteLine(vlanName);
                     var interfaceNameList = vpls_jobj.SelectToken("interfaces").ToList();
+                    //Console.WriteLine(interfaceNameList.ToString());
                     foreach (var interfaceName in interfaceNameList) // all get hosts from vpls
                     {
+                        //Console.WriteLine("interface Name:" + interfaceName.ToString());
+                        if (String.IsNullOrEmpty(interfaceName.ToString()))
+                        {
+                            continue;
+                        }
                         var host = hostList.SingleOrDefault(x => x.interfaceName == interfaceName.ToString()); // find the same hostname host in hostList in onos
                         if (host != null)
                         {

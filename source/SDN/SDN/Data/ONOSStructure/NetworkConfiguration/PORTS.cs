@@ -9,6 +9,10 @@ namespace SDN.Data.ONOSStructure.NetworkConfiguration
             this.interface_list = new List<Interface>();
 
         }
+        public void Delete()
+        {
+
+        }
         public List<Interface>? interface_list = new List<Interface>();
 
         public void AddPort(string addport, string addname)

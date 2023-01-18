@@ -3,10 +3,13 @@
 <PageTitle>Get Test</PageTitle>
 
 @using SDN.Data
+@using SDN.Data.ONOSStructure.NetworkConfiguration;
+
 @inject ONOSGetService GetService;
 @inject ONOS onos;
 @inject JsonDecodeService jsondecodeservice;
 @inject ONOSPostService PostService;
+@inject ONOSDeleteService DeleteService;
 
 
 <h1>ONOS Get Host Test</h1>
@@ -45,7 +48,7 @@
                 <td>@host.location.port</td>
                 @*<td>@host.vlanName</td>*@
                 <td>
-                    <input type="text" class="form-control" @bind:event="oninput" @bind=@host.vlanName />
+                    <input type="text" class="form-control" value="@host.vlanName" @oninput="(e) => UpdatevlanName(host, e)" />
                 </td>
             </tr>
         }
@@ -54,15 +57,26 @@
 
 <button @onclick="PostVpls" class="btn btn-primary">ONOS Post Vlan button</button>
 
+<p>@finish</p>
 
 @code {
-
+    string? finish;
     private void UpdateinterfaceName(Host host, ChangeEventArgs e) // input interfaceName update hostList.interfaceName
         => host.interfaceName = e.Value?.ToString() ?? null;
 
-    void PostVpls()
-    {
+    private void UpdatevlanName(Host host, ChangeEventArgs e) // input interfaceName update hostList.interfaceName
+        => host.vlanName = e.Value?.ToString() ?? null;
 
+    void PostVpls() // use onos.hostList to post network/configuration
+    {
+        DeleteService.DeleteONOSInformation(onos, "network/configuration"); // Delete network/configuration
+                                                                            //PostService.UpdateONOSVplsStructure(onos);
+        PostService.UpdateONOSVplsStructure(onos);
+
+        PostService.PostVPLSports(onos);
+        PostService.PostVPLSapps(onos);
+
+        finish = "send finish";
     }
 
     void ONOSGetHostandVlanTest()

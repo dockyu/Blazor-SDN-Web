@@ -17,8 +17,10 @@
 	string? finish="";
 	void ONOSPostVlanTest() {
 		onos.Ports.AddPort("of:0000000000007777/99", "h87");
+		onos.Ports.AddPort("of:0000000000007799/99", "h99");
 		PostService.PostVPLSports(onos);
 		onos.Vpls.AddvplsList("VLAN1", "h87");
+		onos.Vpls.AddvplsList("VLAN1", "h99");
 		PostService.PostVPLSapps(onos);
 		finish = "send finish";
 	}

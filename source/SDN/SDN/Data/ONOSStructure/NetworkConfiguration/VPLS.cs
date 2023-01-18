@@ -7,23 +7,26 @@ namespace SDN.Data.ONOSStructure.NetworkConfiguration
             this.vplsList = new List<Vlan>();
 
         }
+        public void Delete()
+        {
+
+        }
         public List<Vlan>? vplsList { get; set; }
 
         public void AddvplsList(string vlanname, string hostname)
         {
-            foreach (var vlan in this.vplsList)
+            var vlan = this.vplsList.SingleOrDefault(x => x.name == vlanname);
+            if (vlan != null) // exist
             {
-                if (vlan.name == vlanname)
-                {
-                    vlan.interfaces.Add(hostname);
-                    return;
-                }
+                vlan.interfaces.Add(hostname);
             }
-            
-            // have no vlan with vlanname
-            this.vplsList.Add(new Vlan { 
-                name=vlanname, interfaces=new List<string> { hostname } }
-            );
+            else
+            {
+                var addVlan = new Vlan();
+                addVlan.name = vlanname;
+                addVlan.interfaces.Add(hostname);
+                this.vplsList.Add(addVlan);
+            }
         }
 
     }

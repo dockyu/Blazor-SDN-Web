@@ -7,6 +7,34 @@ namespace SDN.Data
 {
     public class ONOSPostService
     {
+
+        public async void UpdateONOSVplsStructure(ONOS onos) // post whole vpls json to network/configuration
+        {
+            // renew Vpls and Ports
+            onos.Vpls.Delete();
+            onos.Ports.Delete();
+            onos.Vpls = new VPLS();
+            onos.Ports = new PORTS();
+
+            foreach (var host in onos.hostsList)
+            {
+
+                //onos.Ports.AddPort("of:0000000000007777/99", "h87");
+                //onos.Vpls.AddvplsList("VLAN1", "h87");
+                if (!String.IsNullOrEmpty(host.interfaceName))
+                {
+                    onos.Ports.AddPort(host.location.elementId + "/" + host.location.port, host.interfaceName);
+                }
+                if (host.vlanName != "none" && !String.IsNullOrEmpty(host.interfaceName))
+                {
+                    onos.Vpls.AddvplsList(host.vlanName, host.interfaceName);
+                }
+
+                Console.WriteLine("test:" + host.vlanName + ", test:" + host.interfaceName);
+
+            }
+            return;
+        }
         public async void PostVPLSports(ONOS onos)
         {
             foreach (var oneinterface in onos.Ports.interface_list)

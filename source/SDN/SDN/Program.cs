@@ -10,6 +10,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddSingleton<ONOSGetService>();
 builder.Services.AddSingleton<ONOSPostService>();
+builder.Services.AddSingleton<ONOSDeleteService>();
 builder.Services.AddScoped<ONOS>();
 builder.Services.AddSingleton<JsonDecodeService>();
 
