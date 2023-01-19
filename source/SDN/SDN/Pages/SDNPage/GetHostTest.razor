@@ -3,7 +3,7 @@
 <PageTitle>Get Test</PageTitle>
 
 @using SDN.Data
-@using SDN.Data.ONOSStructure.NetworkConfiguration;
+
 
 @inject ONOSGetService GetService;
 @inject ONOS onos;
@@ -55,7 +55,8 @@
     </tbody>
 </table>
 
-<button @onclick="PostVpls" class="btn btn-primary">ONOS Post Vlan button</button>
+<button @onclick="UpdatePorts" class="btn btn-primary">update interface name</button>
+<button @onclick="UpdateVpls" class="btn btn-primary">update vlan</button>
 
 <p>@finish</p>
 
@@ -67,16 +68,24 @@
     private void UpdatevlanName(Host host, ChangeEventArgs e) // input interfaceName update hostList.interfaceName
         => host.vlanName = e.Value?.ToString() ?? null;
 
-    void PostVpls() // use onos.hostList to post network/configuration
+    void UpdatePorts() // use onos.hostList to post network/configuration
     {
         DeleteService.DeleteONOSInformation(onos, "network/configuration"); // Delete network/configuration
                                                                             //PostService.UpdateONOSVplsStructure(onos);
-        PostService.UpdateONOSVplsStructure(onos);
-
+        PostService.UpdateONOSPorts(onos);
         PostService.PostVPLSports(onos);
-        PostService.PostVPLSapps(onos);
 
-        finish = "send finish";
+        //PostService.UpdateONOSVpls(onos);
+        //PostService.PostVPLSapps(onos);
+
+        finish = "update interface name finish";
+    }
+
+    void UpdateVpls()
+    {
+        PostService.UpdateONOSVpls(onos);
+        PostService.PostVPLSapps(onos);
+        finish = "update vlan finish";
     }
 
     void ONOSGetHostandVlanTest()

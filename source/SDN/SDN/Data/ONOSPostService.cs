@@ -8,30 +8,35 @@ namespace SDN.Data
     public class ONOSPostService
     {
 
-        public async void UpdateONOSVplsStructure(ONOS onos) // post whole vpls json to network/configuration
+        public void UpdateONOSPorts(ONOS onos) // post whole vpls json to network/configuration
         {
             // renew Vpls and Ports
-            onos.Vpls.Delete();
             onos.Ports.Delete();
-            onos.Vpls = new VPLS();
             onos.Ports = new PORTS();
 
             foreach (var host in onos.hostsList)
             {
-
-                //onos.Ports.AddPort("of:0000000000007777/99", "h87");
-                //onos.Vpls.AddvplsList("VLAN1", "h87");
                 if (!String.IsNullOrEmpty(host.interfaceName))
                 {
                     onos.Ports.AddPort(host.location.elementId + "/" + host.location.port, host.interfaceName);
                 }
+            }
+            return;
+        }
+
+        public void UpdateONOSVpls(ONOS onos) // post whole vpls json to network/configuration
+        {
+            // renew Vpls and Ports
+            onos.Vpls.Delete();
+            onos.Vpls = new VPLS();
+
+            foreach (var host in onos.hostsList)
+            {
                 if (host.vlanName != "none" && !String.IsNullOrEmpty(host.interfaceName))
                 {
                     onos.Vpls.AddvplsList(host.vlanName, host.interfaceName);
+                    Console.WriteLine("AddvplsList : vlanName:" + host.vlanName + ", interfaceName:" + host.interfaceName);
                 }
-
-                Console.WriteLine("test:" + host.vlanName + ", test:" + host.interfaceName);
-
             }
             return;
         }
@@ -69,7 +74,7 @@ namespace SDN.Data
 
         }
 
-        public async void PostVPLSapps(ONOS onos)
+        public async Task<HttpResponseMessage> PostVPLSapps(ONOS onos)
         {
             var apps = new
             {
@@ -94,10 +99,24 @@ namespace SDN.Data
             var data = new StringContent(json, Encoding.UTF8, "application/json");
             var url = "http://" + onos.onosipadd + ":" + onos.onosport + "/onos/v1/network/configuration";
             using var client = new HttpClient(httpClientHandler);
-            var response = await client.PostAsync(url, data);
-            string result = response.Content.ReadAsStringAsync().Result;
+
+            HttpResponseMessage responseMessage = null;
+            try
+            {
+                var response = await client.PostAsync(url, data);
+            }
+            catch (Exception ex)
+            {
+                if (responseMessage == null)
+                {
+                    responseMessage = new HttpResponseMessage();
+                }
+                responseMessage.StatusCode = HttpStatusCode.InternalServerError;
+                responseMessage.ReasonPhrase = string.Format("RestHttpClient.SendRequest failed: {0}", ex);
+            }
+            return responseMessage;
         }
-        public async void PostVlanTest()
+        public async Task<HttpResponseMessage> PostVlanTest()
         {
             var Vpls = new VPLS();
             var vlan1 = new Vlan();
@@ -134,8 +153,22 @@ namespace SDN.Data
             var data = new StringContent(json, Encoding.UTF8, "application/json");
             var url = "http://192.168.98.142:8181/onos/v1/network/configuration";
             using var client = new HttpClient(httpClientHandler);
-            var response = await client.PostAsync(url, data);
-            string result = response.Content.ReadAsStringAsync().Result;
+
+            HttpResponseMessage responseMessage = null;
+            try
+            {
+                var response = await client.PostAsync(url, data);
+            }
+            catch (Exception ex)
+            {
+                if (responseMessage == null)
+                {
+                    responseMessage = new HttpResponseMessage();
+                }
+                responseMessage.StatusCode = HttpStatusCode.InternalServerError;
+                responseMessage.ReasonPhrase = string.Format("RestHttpClient.SendRequest failed: {0}", ex);
+            }
+            return responseMessage;
         }
     }
 }
