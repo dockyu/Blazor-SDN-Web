@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SDN.Data;
 using SDN.Models;
@@ -28,7 +27,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
             builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
-builder.Services.AddDefaultIdentity<IdentityUser>
+builder.Services.AddDefaultIdentity<ApplicationUser>
     (options =>
     {
         options.SignIn.RequireConfirmedAccount = true;
@@ -38,7 +37,8 @@ builder.Services.AddDefaultIdentity<IdentityUser>
         options.Password.RequireUppercase = false;
         options.Password.RequireLowercase = false;
     })
-.AddEntityFrameworkStores<AppDbContext>();
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<AppDbContext>();
 
 var app = builder.Build();
 

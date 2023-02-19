@@ -44,43 +44,51 @@
 
         <CascadingAuthenticationState>
             <AuthorizeView>
-
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="onosipset">
-                <span class="material-symbols-outlined" aria-hidden="true"> public </span>  ONOS IP&Port Set
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="onosipcheck">
-                <span class="material-symbols-outlined" aria-hidden="true"> public </span>  ONOS IP&Port Check
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="gettest">
-                <span class="material-symbols-outlined" aria-hidden="true"> public </span> Get Test
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="gethosttest">
-                <span class="material-symbols-outlined" aria-hidden="true"> public </span> Get Host Test
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="showvlan">
-                <span class="material-symbols-outlined" aria-hidden="true"> public </span> Show Vlan
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="posttest">
-                <span class="material-symbols-outlined" aria-hidden="true"> public </span> Post Test
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="postvlantest">
-                <span class="material-symbols-outlined" aria-hidden="true"> public </span> Post Vlan Test
-            </NavLink>
-        </div>
-
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="onosipset">
+                        <span class="material-symbols-outlined" aria-hidden="true"> public </span>  ONOS IP&Port Set
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="onosipcheck">
+                        <span class="material-symbols-outlined" aria-hidden="true"> public </span>  ONOS IP&Port Check
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="gettest">
+                        <span class="material-symbols-outlined" aria-hidden="true"> public </span> Get Test
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="gethosttest">
+                        <span class="material-symbols-outlined" aria-hidden="true"> public </span> Get Host Test
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="showvlan">
+                        <span class="material-symbols-outlined" aria-hidden="true"> public </span> Show Vlan
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="posttest">
+                        <span class="material-symbols-outlined" aria-hidden="true"> public </span> Post Test
+                    </NavLink>
+                </div>
+                <div class="nav-item px-3">
+                    <NavLink class="nav-link" href="postvlantest">
+                        <span class="material-symbols-outlined" aria-hidden="true"> public </span> Post Vlan Test
+                    </NavLink>
+                </div>
+            </AuthorizeView>
+            @*admin access page*@
+            <AuthorizeView Roles="Admin">
+                <Authorized>
+                    <div class="nav-item px-3">
+                        <NavLink class="nav-link" href="adminpage">
+                            <span class="oi oi-list-rich" aria-hidden="true"></span> Admin Page
+                        </NavLink>
+                    </div>
+                </Authorized>
             </AuthorizeView>
         </CascadingAuthenticationState>
     </nav>
